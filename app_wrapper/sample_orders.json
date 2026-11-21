@@ -1,0 +1,66 @@
+[
+  {
+    "order_id": "ORD-2026-001",
+    "product": "Enterprise Cloud Appliance X1",
+    "quantity": 6,
+    "unit_price": 2800.00,
+    "unit_cost": 1680.00,
+    "region": "US",
+    "sales_rep": "Sarah Jenkins"
+  },
+  {
+    "order_id": "ORD-2026-002",
+    "product": "High-Throughput SAN Storage Array",
+    "quantity": 18,
+    "unit_price": 1450.00,
+    "unit_cost": 870.00,
+    "region": "EU",
+    "sales_rep": "Marco Rossi"
+  },
+  {
+    "order_id": "ORD-2026-003",
+    "product": "Managed Edge Router Gateway",
+    "quantity": 75,
+    "unit_price": 620.00,
+    "unit_cost": 372.00,
+    "region": "BD",
+    "sales_rep": "Tanvir Ahmed"
+  },
+  {
+    "order_id": "ORD-2026-004",
+    "product": "Smart Micro-UPS Rackmount Units",
+    "quantity": 250,
+    "unit_price": 310.00,
+    "unit_cost": 186.00,
+    "region": "US",
+    "sales_rep": "Sarah Jenkins"
+  },
+  {
+    "order_id": "ORD-2026-005",
+    "product": "Industrial PoE Switch 48-Port",
+    "quantity": 30,
+    "unit_price": 950.00,
+    "unit_cost": 760.00,
+    "region": "EU",
+    "sales_rep": "Claire Dupont"
+  },
+  {
+    "order_id": "ORD-2026-006",
+    "product": "Low-Margin High-Volume Fiber Transceivers",
+    "quantity": 120,
+    "unit_price": 180.00,
+    "unit_cost": 146.00,
+    "region": "BD",
+    "sales_rep": "Tanvir Ahmed"
+  },
+  {
+    "order_id": "ORD-2026-007",
+    "product": "Cybersecurity Hardware Token Bulk Pack",
+    "quantity": 300,
+    "unit_price": 85.00,
+    "unit_cost": 42.50,
+    "region": "OTHER",
+    "sales_rep": "Global Direct"
+  }
+]
+

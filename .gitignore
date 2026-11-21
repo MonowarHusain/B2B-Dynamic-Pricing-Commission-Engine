@@ -1,0 +1,54 @@
+# ==============================================================================
+# Git Ignore - Hybrid Binary-Protected Release & Licensing Template
+# ==============================================================================
+
+# Virtual Environment
+.venv/
+env/
+venv/
+ENV/
+
+# Cryptographic Keys & Secrets (STRICT: Never commit private or public keys)
+.secrets/
+*.pem
+*.key
+*.priv
+*.pub
+
+# Compiled Native Binaries & Cython C Artifacts
+*.so
+*.pyd
+*.c
+*.dylib
+*.dll
+
+# Release and Build Distribution Directories
+build/
+dist/
+build_tmp/
+*.egg-info/
+.eggs/
+
+# Python Bytecode & Optimization Caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.manifest
+*.spec
+
+# Test & Coverage Outputs
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# OS and IDE Metadata
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.idea/
+.vscode/
+*.swp
+*.swo
