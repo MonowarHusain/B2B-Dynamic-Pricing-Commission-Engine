@@ -2,6 +2,10 @@
 
 A reference architecture and production template for distributing Python applications with protected proprietary business logic and asymmetric cryptographic license verification.
 
+> 🌐 **Interactive Architecture Showcase & Live Sandbox:**  
+> Explore the animated trust boundary, tamper sandbox, and live margin simulator at  
+> 👉 **[https://monowarhusain.github.io/B2B-Dynamic-Pricing-Commission-Engine/](https://monowarhusain.github.io/B2B-Dynamic-Pricing-Commission-Engine/)**
+
 ---
 
 ## 1. Overview & Threat Model

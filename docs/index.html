@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B2B Dynamic Pricing & Commission Engine — Hybrid Protected Release Architecture</title>
+  <meta name="description" content="Interactive architecture showcase for B2B Dynamic Pricing & Commission Engine with Cython native binary compilation and Ed25519 asymmetric license enforcement.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#1e1b4b',
+              950: '#0f0e26',
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'dash-flow': 'dash 2s linear infinite',
+            'shake': 'shake 0.4s ease-in-out',
+          },
+          keyframes: {
+            dash: {
+              to: { 'stroke-dashoffset': '-20' },
+            },
+            shake: {
+              '0%, 100%': { transform: 'translateX(0)' },
+              '20%, 60%': { transform: 'translateX(-6px)' },
+              '40%, 80%': { transform: 'translateX(6px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .flow-line {
+      stroke-dasharray: 6 6;
+      animation: dash 1.5s linear infinite;
+    }
+    @keyframes dash {
+      from { stroke-dashoffset: 24; }
+      to { stroke-dashoffset: 0; }
+    }
+    .flow-line-reverse {
+      stroke-dasharray: 6 6;
+      animation: dashReverse 1.5s linear infinite;
+    }
+    @keyframes dashReverse {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: 24; }
+    }
+    pre::-webkit-scrollbar { height: 6px; width: 6px; }
+    pre::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Sticky Navbar -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center space-x-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform">
+          ⚡
+        </div>
+        <div>
+          <div class="text-sm font-bold text-white tracking-tight flex items-center gap-2">
+            Dynamic Pricing & Commission Engine
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-700/60 font-semibold">
+              Cython + Ed25519
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-mono">Hybrid Protected Release Template</p>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center space-x-6 text-xs font-medium text-slate-300">
+        <a href="#architecture" class="hover:text-indigo-400 transition-colors">Trust Boundary</a>
+        <a href="#license-sandbox" class="hover:text-indigo-400 transition-colors">License Sandbox</a>
+        <a href="#simulator" class="hover:text-indigo-400 transition-colors">Pricing Simulator</a>
+        <a href="#pipeline" class="hover:text-indigo-400 transition-colors">Build Pipeline</a>
+      </nav>
+
+      <div class="flex items-center space-x-3">
+        <a href="https://github.com/MonowarHusain/B2B-Dynamic-Pricing-Commission-Engine" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-slate-600 text-xs font-semibold transition flex items-center gap-2 shadow-sm">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden pt-16 pb-20 border-b border-slate-800/80 bg-gradient-to-b from-slate-900/50 via-slate-950 to-slate-950">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(99,102,241,0.15),rgba(255,255,255,0))]"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+
+      <!-- Badge Strip -->
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700/80 shadow-inner text-xs text-slate-300">
+        <span class="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-medium text-slate-200">Production-Ready Hybrid Architecture</span>
+        <span class="text-slate-600">|</span>
+        <span class="text-indigo-400 font-mono">Zero Source Leakage</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight">
+        Protect Proprietary Logic in
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400">
+          Client-Hosted Python Releases
+        </span>
+      </h1>
+
+      <p class="max-w-2xl mx-auto text-sm sm:text-base text-slate-400 leading-relaxed">
+        A reference architecture pairing a <strong class="text-slate-200">readable FastAPI wrapper</strong> with a <strong class="text-slate-200">compiled native Cython core</strong> and <strong class="text-slate-200">Ed25519 asymmetric licensing</strong>. Enforces volume discounts, regional taxation, and an 18% minimum net profit guardrail.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
+        <a href="#architecture" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs tracking-wide shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+          <span>🔍</span> Explore Trust Boundary
+        </a>
+        <a href="#simulator" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-semibold transition flex items-center gap-2">
+          <span>⚙️</span> Interactive Pricing Simulator
+        </a>
+        <a href="https://github.com/MonowarHusain/B2B-Dynamic-Pricing-Commission-Engine" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-slate-900/60 hover:bg-slate-900 text-indigo-400 border border-indigo-900/60 text-xs font-semibold transition flex items-center gap-2">
+          <span>⭐</span> Star on GitHub
+        </a>
+      </div>
+
+      <!-- Feature Badges -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto pt-8 text-left">
+        <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start gap-3">
+          <span class="text-xl">🛡️</span>
+          <div>
+            <div class="text-xs font-bold text-slate-200">Zero Source Leak</div>
+            <div class="text-[11px] text-slate-400">No .py or .c files in core release</div>
+          </div>
+        </div>
+        <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start gap-3">
+          <span class="text-xl">🔑</span>
+          <div>
+            <div class="text-xs font-bold text-slate-200">Ed25519 Verified</div>
+            <div class="text-[11px] text-slate-400">Asymmetric vendor public key baked in</div>
+          </div>
+        </div>
+        <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start gap-3">
+          <span class="text-xl">🖥️</span>
+          <div>
+            <div class="text-xs font-bold text-slate-200">Host-Locked Token</div>
+            <div class="text-[11px] text-slate-400">Binds to hardware hostname</div>
+          </div>
+        </div>
+        <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start gap-3">
+          <span class="text-xl">📊</span>
+          <div>
+            <div class="text-xs font-bold text-slate-200">18% Profit Floor</div>
+            <div class="text-[11px] text-slate-400">Hidden guardrail protects margins</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 1: Trust-Boundary Architecture Diagram -->
+  <section id="architecture" class="py-16 border-b border-slate-800 bg-slate-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-indigo-400 font-semibold">Reference Diagram</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Trust Boundary Architecture</h2>
+          <p class="text-xs text-slate-400 mt-1 max-w-xl">
+            Simulate requests flowing across the application boundary to observe how the native binary intercepts tampering and shields business secrets.
+          </p>
+        </div>
+
+        <!-- Simulation Control Buttons -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="setSimState('valid')" id="btn-sim-valid" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950 border border-emerald-500/60 text-emerald-300 shadow-sm transition">
+            Simulate Valid Request
+          </button>
+          <button onclick="setSimState('tampered')" id="btn-sim-tampered" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 transition">
+            Simulate Tampered Key
+          </button>
+          <button onclick="setSimState('inspect')" id="btn-sim-inspect" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 transition">
+            Simulate Source Audit
+          </button>
+        </div>
+      </div>
+
+      <!-- Interactive SVG Diagram Container -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 relative shadow-2xl overflow-hidden">
+        
+        <!-- Live Callout Banner -->
+        <div id="diagram-callout" class="mb-6 p-3.5 rounded-xl border bg-emerald-950/40 border-emerald-800/80 text-xs flex items-center justify-between transition-all">
+          <div class="flex items-center gap-2.5">
+            <span id="callout-icon" class="text-lg">✅</span>
+            <span id="callout-text" class="text-emerald-200 font-medium">
+              Valid Request: Ed25519 signature checks out. Enterprise pricing and commissions calculated in native machine code.
+            </span>
+          </div>
+          <span id="callout-code" class="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-900/60 text-emerald-300 border border-emerald-700">
+            HTTP 200 OK
+          </span>
+        </div>
+
+        <!-- Architecture Flow Visual -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 relative">
+
+          <!-- Zone A: Client Wrapper -->
+          <div class="lg:col-span-5 p-5 rounded-xl border-2 border-dashed border-emerald-600/40 bg-emerald-950/10 space-y-4 relative">
+            <div class="flex items-center justify-between pb-2 border-b border-emerald-900/50">
+              <span class="text-xs font-bold text-emerald-400 font-mono flex items-center gap-1.5">
+                <span>📂</span> Zone A: Client-Accessible Wrapper
+              </span>
+              <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-emerald-900/40 text-emerald-300 border border-emerald-800">
+                app_wrapper/
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+              Open Python layer. Client developers can freely customize routing, integrate database ORMs, or style the HTML/Tailwind interface.
+            </p>
+
+            <div class="space-y-2.5 font-mono text-xs">
+              <div id="node-http" class="p-3 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-between">
+                <div>
+                  <span class="text-indigo-400 font-bold">POST</span>
+                  <span class="text-slate-300">/api/calculate</span>
+                </div>
+                <span class="text-[10px] text-slate-500">JSON Batch</span>
+              </div>
+              <div id="node-main" class="p-3 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-between">
+                <div>
+                  <span class="text-slate-400">FastAPI</span>
+                  <span class="text-emerald-400">main.py</span>
+                </div>
+                <span class="text-[10px] text-slate-500">Readable</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+                <span>🔑 Hot-Swap License Upload</span>
+                <span class="text-slate-500">POST /api/upload-license</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trust Boundary Divider Wall -->
+          <div class="lg:col-span-2 flex flex-col items-center justify-center py-4 relative">
+            <div class="h-full w-0.5 bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 hidden lg:block opacity-70"></div>
+            <div class="z-10 p-2.5 rounded-full bg-slate-950 border border-slate-700 shadow-xl text-center">
+              <span id="boundary-shield" class="text-2xl transition-transform block">🛡️</span>
+              <span class="text-[9px] font-mono uppercase tracking-wider text-slate-400 block mt-1">Trust Boundary</span>
+            </div>
+            <div class="text-[10px] text-slate-500 text-center mt-2 font-mono">
+              Zero .py / .c Leak
+            </div>
+          </div>
+
+          <!-- Zone B: Compiled Core Engine -->
+          <div id="zone-b-container" class="lg:col-span-5 p-5 rounded-xl border-2 border-amber-600/50 bg-amber-950/10 space-y-4 relative transition-colors">
+            <div class="flex items-center justify-between pb-2 border-b border-amber-900/50">
+              <span class="text-xs font-bold text-amber-400 font-mono flex items-center gap-1.5">
+                <span>🔒</span> Zone B: Native C-Extension Binaries
+              </span>
+              <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-amber-900/40 text-amber-300 border border-amber-800">
+                core_engine/ (*.so)
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+              Compiled machine code. Raw Python formulas, margin guardrail algorithms, and embedded vendor public keys cannot be decompiled back to readable AST.
+            </p>
+
+            <div class="space-y-2.5 font-mono text-xs">
+              <div id="node-guard" class="p-3 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-between transition-colors">
+                <div>
+                  <span class="text-purple-400 font-semibold">license_guard.so</span>
+                  <span class="block text-[10px] text-slate-500">Embedded Ed25519 PubKey</span>
+                </div>
+                <span id="guard-status-badge" class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">
+                  Verified
+                </span>
+              </div>
+              <div id="node-pricing" class="p-3 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-between transition-colors">
+                <div>
+                  <span class="text-amber-400 font-semibold">pricing_engine.so</span>
+                  <span class="block text-[10px] text-slate-500">Slabs • 18% Floor • Commissions</span>
+                </div>
+                <span class="text-[10px] text-slate-500">Compiled</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+                <span>Output Sealed With</span>
+                <span class="text-indigo-400 font-mono">SHA-256 Digest</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 2: Interactive License Tamper & Ed25519 Sandbox -->
+  <section id="license-sandbox" class="py-16 border-b border-slate-800 bg-slate-950/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+
+      <div>
+        <span class="text-xs font-mono uppercase tracking-wider text-indigo-400 font-semibold">Cryptographic Security</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Ed25519 Tamper Sandbox</h2>
+        <p class="text-xs text-slate-400 mt-1 max-w-xl">
+          Edit the payload JSON below (e.g., change tier or extend expiration) to see how the Ed25519 signature algorithm instantly detects and rejects tampering.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left: Editable Payload JSON -->
+        <div class="lg:col-span-6 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg flex flex-col">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+            <span class="text-xs font-bold text-white font-mono flex items-center gap-2">
+              <span>📝</span> License Payload Data (Raw JSON)
+            </span>
+            <span id="tamper-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+              Signature Valid
+            </span>
+          </div>
+
+          <textarea id="license-json-editor" spellcheck="false" class="w-full h-56 bg-slate-950 text-emerald-400 font-mono text-xs p-3.5 rounded-xl border border-slate-800 focus:outline-none focus:border-indigo-500 transition leading-relaxed resize-none">{
+  "client_name": "Acme Global Enterprise Inc.",
+  "tier": "enterprise",
+  "issued_at": 1732233600,
+  "expires_at": 1734825600,
+  "host": "monowars-MacBook-Air.local"
+}</textarea>
+
+          <div class="flex flex-wrap items-center justify-between gap-2 mt-4 pt-3 border-t border-slate-800">
+            <div class="flex items-center gap-2">
+              <button onclick="reSignLicense()" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition flex items-center gap-1.5 shadow-md shadow-indigo-600/30">
+                <span>🖋️</span> Re-Sign with Private Key
+              </button>
+              <button onclick="simulatePastExpiry()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition">
+                Test Expiry (-1 Day)
+              </button>
+            </div>
+            <button onclick="resetLicensePayload()" class="text-xs text-slate-500 hover:text-slate-300 transition">
+              Reset Default
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Cryptographic Envelope & Token -->
+        <div class="lg:col-span-6 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <span class="text-xs font-bold text-white font-mono flex items-center gap-2">
+                <span>🔐</span> Sealed Token (`license.key`)
+              </span>
+              <span class="text-[10px] text-slate-500 font-mono">Base64 Encoded Envelope</span>
+            </div>
+
+            <!-- Signature Callout Box -->
+            <div id="tamper-feedback" class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800/80 text-xs space-y-1 transition-all">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-emerald-300 flex items-center gap-1.5" id="tamper-feedback-title">
+                  <span>✅</span> Ed25519 Signature Verified
+                </span>
+                <span class="text-[10px] font-mono text-emerald-400" id="tamper-feedback-status">HTTP 200</span>
+              </div>
+              <p class="text-[11px] text-slate-400" id="tamper-feedback-desc">
+                Canonical sorted JSON data matches signature computed with vendor's private key.
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-slate-400 font-mono uppercase mb-1">Simulated Ed25519 Signature</label>
+              <div id="sig-display" class="p-2.5 rounded-lg bg-slate-950 text-indigo-300 font-mono text-[11px] break-all border border-slate-800 select-all">
+                MEYCIQC3nL49R...zU2Z5e1KqQ...
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-slate-400 font-mono uppercase mb-1">Generated Base64 Token Content</label>
+              <pre id="token-display" class="p-2.5 rounded-lg bg-slate-950 text-slate-400 font-mono text-[11px] h-20 overflow-y-auto border border-slate-800 select-all"></pre>
+            </div>
+          </div>
+
+          <div class="text-[11px] text-slate-500 pt-3 border-t border-slate-800 mt-2">
+            💡 The public key baked into <code class="text-indigo-400">license_guard.so</code> validates this token on every calculation request.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 3: Interactive Pricing & Margin Guardrail Simulator -->
+  <section id="simulator" class="py-16 border-b border-slate-800 bg-slate-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-indigo-400 font-semibold">Live Sandbox</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">B2B Pricing & Margin Guardrail Simulator</h2>
+          <p class="text-xs text-slate-400 mt-1 max-w-xl">
+            Test how volume discounts, license tier caps, regional taxation, sales commissions, and the 18% minimum net profit floor interact.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-400">Simulating Tier:</span>
+          <span id="sim-tier-badge" class="px-2.5 py-1 rounded-md text-xs font-mono font-bold uppercase bg-purple-900/60 text-purple-300 border border-purple-700">
+            Enterprise (20% Max)
+          </span>
+        </div>
+      </div>
+
+      <!-- Simulator Interactive Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Controls Column -->
+        <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-4">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 pb-2 border-b border-slate-800 flex items-center justify-between">
+            <span>Order Parameters</span>
+            <button onclick="loadSamplePreset('bulk')" class="text-indigo-400 hover:text-indigo-300 text-[11px] font-mono">
+              Load 250-Unit Bulk
+            </button>
+          </h3>
+
+          <!-- Quantity Slider & Input -->
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <label for="input-qty" class="text-slate-300 font-medium">Quantity (Units)</label>
+              <span id="val-qty" class="font-mono text-indigo-400 font-bold">250 units</span>
+            </div>
+            <input type="range" id="input-qty" min="1" max="500" value="250" oninput="updatePricingSimulation()" class="w-full accent-indigo-600 cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono mt-0.5">
+              <span>0% (&lt;10)</span>
+              <span>5% (10+)</span>
+              <span>12% (50+)</span>
+              <span>20% (200+)</span>
+            </div>
+          </div>
+
+          <!-- Unit List Price -->
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <label for="input-price" class="text-slate-300 font-medium">Unit List Price ($)</label>
+              <span id="val-price" class="font-mono text-slate-200 font-bold">$310.00</span>
+            </div>
+            <input type="range" id="input-price" min="50" max="2000" step="10" value="310" oninput="updatePricingSimulation()" class="w-full accent-indigo-600 cursor-pointer">
+          </div>
+
+          <!-- Unit Cost (COGS) -->
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <label for="input-cost" class="text-slate-300 font-medium">Unit Cost / COGS ($)</label>
+              <span id="val-cost" class="font-mono text-slate-200 font-bold">$186.00</span>
+            </div>
+            <input type="range" id="input-cost" min="20" max="1800" step="5" value="186" oninput="updatePricingSimulation()" class="w-full accent-indigo-600 cursor-pointer">
+            <div class="text-[10px] text-slate-500 mt-1 flex justify-between">
+              <span>Base product acquisition cost</span>
+              <button onclick="setTightMarginCost()" class="text-amber-400 hover:underline">
+                Simulate Tight Margin (Breach)
+              </button>
+            </div>
+          </div>
+
+          <!-- Region Jurisdiction -->
+          <div>
+            <label class="block text-xs text-slate-300 font-medium mb-1.5">Regional Tax Jurisdiction</label>
+            <div class="grid grid-cols-4 gap-2">
+              <button onclick="setRegion('BD')" id="btn-reg-BD" class="p-2 rounded-lg bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 hover:border-slate-700 transition">
+                BD (15%)
+              </button>
+              <button onclick="setRegion('US')" id="btn-reg-US" class="p-2 rounded-lg bg-indigo-950/80 border border-indigo-700 text-xs font-mono text-indigo-300 font-bold transition">
+                US (8%)
+              </button>
+              <button onclick="setRegion('EU')" id="btn-reg-EU" class="p-2 rounded-lg bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 hover:border-slate-700 transition">
+                EU (20%)
+              </button>
+              <button onclick="setRegion('OTHER')" id="btn-reg-OTHER" class="p-2 rounded-lg bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 hover:border-slate-700 transition">
+                Default (10%)
+              </button>
+            </div>
+          </div>
+
+          <!-- License Tier Override Toggle -->
+          <div>
+            <label class="block text-xs text-slate-300 font-medium mb-1.5">License Tier Privileges</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="setTierOverride('starter')" id="btn-tier-starter" class="p-2 rounded-lg bg-slate-950 border border-slate-800 text-xs font-medium text-slate-400 hover:text-white transition">
+                Starter (12% Cap)
+              </button>
+              <button onclick="setTierOverride('enterprise')" id="btn-tier-enterprise" class="p-2 rounded-lg bg-purple-950/80 border border-purple-700 text-xs font-bold text-purple-300 transition">
+                Enterprise (20% Max)
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Output Breakdown Column -->
+        <div class="lg:col-span-7 space-y-4">
+
+          <!-- 18% Guardrail Status Alert -->
+          <div id="guardrail-alert" class="p-4 rounded-xl border bg-amber-950/30 border-amber-800/80 text-xs transition-all shadow-md">
+            <div class="flex items-start gap-3">
+              <span id="guardrail-icon" class="text-xl">⚠️</span>
+              <div>
+                <h4 id="guardrail-title" class="font-bold uppercase tracking-wider text-amber-300">
+                  18.0% Minimum Net Margin Guardrail Triggered
+                </h4>
+                <p id="guardrail-desc" class="text-slate-300 mt-1 leading-relaxed">
+                  Raw discount reduced from 20.0% to 18.9% to preserve the required 18.0% floor profit margin.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI Metric Cards -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-3">
+              <span class="text-[10px] uppercase font-semibold text-slate-500">Gross Total</span>
+              <div id="sim-gross" class="text-base font-bold text-slate-100 font-mono mt-0.5">$77,500.00</div>
+              <span class="text-[10px] text-slate-500">before discounts</span>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-3">
+              <span class="text-[10px] uppercase font-semibold text-indigo-400">Discount Applied</span>
+              <div id="sim-discount" class="text-base font-bold text-indigo-300 font-mono mt-0.5">-$14,660.00</div>
+              <span id="sim-discount-pct" class="text-[10px] text-indigo-400">18.9% applied</span>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-3">
+              <span class="text-[10px] uppercase font-semibold text-emerald-400">Net Profit</span>
+              <div id="sim-profit" class="text-base font-bold text-emerald-300 font-mono mt-0.5">$11,311.20</div>
+              <span id="sim-margin-pct" class="text-[10px] text-emerald-400 font-bold">18.0% net margin</span>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-3">
+              <span class="text-[10px] uppercase font-semibold text-amber-400">Final Order Total</span>
+              <div id="sim-final" class="text-base font-bold text-amber-300 font-mono mt-0.5">$67,867.20</div>
+              <span class="text-[10px] text-slate-500">incl. regional tax</span>
+            </div>
+          </div>
+
+          <!-- Detailed Breakdown Table -->
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-md font-mono text-xs space-y-2">
+            <div class="flex justify-between py-1 border-b border-slate-800 text-slate-400 text-[11px]">
+              <span>CALCULATION COMPONENT</span>
+              <span>RATE / AMOUNT</span>
+            </div>
+            <div class="flex justify-between py-1 text-slate-300">
+              <span>Gross Order Value</span>
+              <span id="row-gross">$77,500.00</span>
+            </div>
+            <div class="flex justify-between py-1 text-indigo-300">
+              <span id="row-discount-label">Applied Volume Discount</span>
+              <span id="row-discount">-$14,660.00</span>
+            </div>
+            <div class="flex justify-between py-1 text-slate-300">
+              <span>Net Revenue</span>
+              <span id="row-net-rev">$62,840.00</span>
+            </div>
+            <div class="flex justify-between py-1 text-slate-400">
+              <span>Total Product Cost (COGS)</span>
+              <span id="row-cost">-$46,500.00</span>
+            </div>
+            <div class="flex justify-between py-1 text-slate-400">
+              <span id="row-comm-label">Sales Rep Commission (8%)</span>
+              <span id="row-comm">-$5,027.20</span>
+            </div>
+            <div class="flex justify-between py-1 text-slate-300 border-t border-slate-800 pt-2">
+              <span id="row-tax-label">Regional Tax (US 8%)</span>
+              <span id="row-tax">+$5,027.20</span>
+            </div>
+            <div class="flex justify-between py-1.5 text-amber-300 font-bold text-sm border-t border-slate-800 pt-2">
+              <span>Payable Order Total</span>
+              <span id="row-final">$67,867.20</span>
+            </div>
+          </div>
+
+          <!-- Output Integrity SHA-256 Badge -->
+          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-slate-400">Native Output SHA-256:</span>
+              <span id="sim-digest" class="font-mono text-indigo-400 text-[11px] truncate max-w-[280px]">
+                Computing...
+              </span>
+            </div>
+            <span class="text-[10px] text-slate-500 font-mono">Sealed</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 4: Build & Red-Team Pipeline Walkthrough -->
+  <section id="pipeline" class="py-16 border-b border-slate-800 bg-slate-950/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+
+      <div>
+        <span class="text-xs font-mono uppercase tracking-wider text-indigo-400 font-semibold">Release Automation</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Four-Stage Build & Release Pipeline</h2>
+        <p class="text-xs text-slate-400 mt-1 max-w-xl">
+          How <code class="text-indigo-400">make build</code> compiles, strips, and audits the distribution package to guarantee zero source leaks.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <!-- Stage 1 -->
+        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 relative">
+          <div class="flex items-center justify-between">
+            <span class="w-7 h-7 rounded-lg bg-indigo-900/60 text-indigo-300 font-mono font-bold flex items-center justify-center text-xs">1</span>
+            <span class="text-[10px] font-mono text-slate-500">scripts/keygen.py</span>
+          </div>
+          <h3 class="text-sm font-bold text-white">Ed25519 Key Generation</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Generates 256-bit asymmetric keypair into <code class="text-slate-300 font-mono">.secrets/</code>. The private key remains vendor-side only.
+          </p>
+          <div class="bg-slate-950 p-2 rounded-lg font-mono text-[11px] text-slate-400 flex justify-between items-center">
+            <code>make keygen</code>
+            <button onclick="copyCmd('make keygen')" class="text-indigo-400 hover:text-indigo-300 text-[10px]">Copy</button>
+          </div>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 relative">
+          <div class="flex items-center justify-between">
+            <span class="w-7 h-7 rounded-lg bg-purple-900/60 text-purple-300 font-mono font-bold flex items-center justify-center text-xs">2</span>
+            <span class="text-[10px] font-mono text-slate-500">build_release.sh</span>
+          </div>
+          <h3 class="text-sm font-bold text-white">Public Key Baking</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Injects <code class="text-slate-300 font-mono">public.pem</code> directly into <code class="text-slate-300 font-mono">license_guard.py</code> right before Cython native C compilation.
+          </p>
+          <div class="bg-slate-950 p-2 rounded-lg font-mono text-[11px] text-slate-400 flex justify-between items-center">
+            <code>make build</code>
+            <button onclick="copyCmd('make build')" class="text-indigo-400 hover:text-indigo-300 text-[10px]">Copy</button>
+          </div>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 relative">
+          <div class="flex items-center justify-between">
+            <span class="w-7 h-7 rounded-lg bg-amber-900/60 text-amber-300 font-mono font-bold flex items-center justify-center text-xs">3</span>
+            <span class="text-[10px] font-mono text-slate-500">Strict Audit</span>
+          </div>
+          <h3 class="text-sm font-bold text-white">Source & C Strip Audit</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Deletes all <code class="text-slate-300 font-mono">.py</code>, <code class="text-slate-300 font-mono">.c</code>, <code class="text-slate-300 font-mono">.map</code>, and <code class="text-slate-300 font-mono">.pem</code> files inside <code class="text-slate-300 font-mono">core_engine/</code>. Fails build if found.
+          </p>
+          <div class="bg-slate-950 p-2 rounded-lg font-mono text-[11px] text-slate-400 flex justify-between items-center">
+            <code>make test</code>
+            <button onclick="copyCmd('make test')" class="text-indigo-400 hover:text-indigo-300 text-[10px]">Copy</button>
+          </div>
+        </div>
+
+        <!-- Stage 4 -->
+        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 relative">
+          <div class="flex items-center justify-between">
+            <span class="w-7 h-7 rounded-lg bg-emerald-900/60 text-emerald-300 font-mono font-bold flex items-center justify-center text-xs">4</span>
+            <span class="text-[10px] font-mono text-slate-500">dist/client_release</span>
+          </div>
+          <h3 class="text-sm font-bold text-white">Host-Locked Release</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Signs a valid 30-day host-bound <code class="text-slate-300 font-mono">license.key</code> and packages the complete runnable client release.
+          </p>
+          <div class="bg-slate-950 p-2 rounded-lg font-mono text-[11px] text-slate-400 flex justify-between items-center">
+            <code>make run</code>
+            <button onclick="copyCmd('make run')" class="text-indigo-400 hover:text-indigo-300 text-[10px]">Copy</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 bg-slate-950 py-10 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <p class="text-slate-400 font-semibold">B2B Dynamic Pricing & Commission Engine</p>
+        <p class="text-[11px] mt-0.5">Hybrid Binary-Protected Release & Licensing Template • Open-Source Reference Architecture</p>
+      </div>
+      <div class="flex items-center space-x-6 text-slate-400 text-[11px]">
+        <a href="https://github.com/MonowarHusain/B2B-Dynamic-Pricing-Commission-Engine" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">GitHub Repository</a>
+        <a href="https://github.com/MonowarHusain/B2B-Dynamic-Pricing-Commission-Engine/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">MIT License</a>
+        <a href="#architecture" class="hover:text-white transition">Back to Top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // --- State & Defaults ---
+    let currentRegion = "US";
+    let currentTier = "enterprise";
+    let lastValidPayload = {
+      "client_name": "Acme Global Enterprise Inc.",
+      "tier": "enterprise",
+      "issued_at": Math.floor(Date.now() / 1000) - 86400,
+      "expires_at": Math.floor(Date.now() / 1000) + (30 * 86400),
+      "host": "monowars-MacBook-Air.local"
+    };
+
+    const TAX_SLABS = {
+      "BD": 0.15,
+      "US": 0.08,
+      "EU": 0.20,
+      "OTHER": 0.10
+    };
+
+    // --- Section 1: Architecture Simulation Controls ---
+    function setSimState(state) {
+      const callout = document.getElementById("diagram-callout");
+      const icon = document.getElementById("callout-icon");
+      const text = document.getElementById("callout-text");
+      const code = document.getElementById("callout-code");
+      const shield = document.getElementById("boundary-shield");
+      const guardNode = document.getElementById("node-guard");
+      const guardBadge = document.getElementById("guard-status-badge");
+      const zoneB = document.getElementById("zone-b-container");
+
+      const btnValid = document.getElementById("btn-sim-valid");
+      const btnTamper = document.getElementById("btn-sim-tampered");
+      const btnInspect = document.getElementById("btn-sim-inspect");
+
+      [btnValid, btnTamper, btnInspect].forEach(b => {
+        b.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 transition";
+      });
+
+      if (state === "valid") {
+        btnValid.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-950 border border-emerald-500/60 text-emerald-300 shadow-sm transition";
+        callout.className = "mb-6 p-3.5 rounded-xl border bg-emerald-950/40 border-emerald-800/80 text-xs flex items-center justify-between transition-all";
+        icon.textContent = "✅";
+        text.textContent = "Valid Request: Ed25519 signature checks out. Enterprise privileges unlocked, calculations computed in native machine code.";
+        code.className = "font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-900/60 text-emerald-300 border border-emerald-700";
+        code.textContent = "HTTP 200 OK";
+        guardNode.className = "p-3 rounded-lg bg-slate-950 border border-emerald-800/80 flex items-center justify-between transition-colors";
+        guardBadge.className = "text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800";
+        guardBadge.textContent = "Verified";
+        shield.textContent = "🛡️";
+        shield.className = "text-2xl text-emerald-400 transition-transform scale-100";
+        zoneB.className = "lg:col-span-5 p-5 rounded-xl border-2 border-emerald-600/40 bg-emerald-950/10 space-y-4 relative transition-colors";
+      } else if (state === "tampered") {
+        btnTamper.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-950 border border-rose-500/60 text-rose-300 shadow-sm transition";
+        callout.className = "mb-6 p-3.5 rounded-xl border bg-rose-950/40 border-rose-800/80 text-xs flex items-center justify-between transition-all animate-shake";
+        icon.textContent = "🚫";
+        text.textContent = "Signature Mismatch: License payload was altered without the vendor private key. Execution aborted before calculation.";
+        code.className = "font-mono text-[10px] px-2 py-0.5 rounded bg-rose-900/60 text-rose-300 border border-rose-700";
+        code.textContent = "HTTP 403 Forbidden";
+        guardNode.className = "p-3 rounded-lg bg-slate-950 border border-rose-800/80 flex items-center justify-between transition-colors";
+        guardBadge.className = "text-[10px] px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800";
+        guardBadge.textContent = "Signature Mismatch";
+        shield.textContent = "⛔";
+        shield.className = "text-2xl text-rose-400 transition-transform scale-110";
+        zoneB.className = "lg:col-span-5 p-5 rounded-xl border-2 border-rose-600/40 bg-rose-950/10 space-y-4 relative transition-colors";
+      } else if (state === "inspect") {
+        btnInspect.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-950 border border-purple-500/60 text-purple-300 shadow-sm transition";
+        callout.className = "mb-6 p-3.5 rounded-xl border bg-purple-950/40 border-purple-800/80 text-xs flex items-center justify-between transition-all";
+        icon.textContent = "🛡️";
+        text.textContent = "Source Audit: Probing Zone B yields only native .so binaries. Python AST, pricing algorithms, and raw formulas are stripped.";
+        code.className = "font-mono text-[10px] px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-700";
+        code.textContent = "Zero Python Source";
+        shield.textContent = "🧱";
+        shield.className = "text-2xl text-purple-400 transition-transform scale-100";
+        zoneB.className = "lg:col-span-5 p-5 rounded-xl border-2 border-purple-600/40 bg-purple-950/10 space-y-4 relative transition-colors";
+      }
+    }
+
+    // --- Section 2: License Tamper & Ed25519 Logic ---
+    function hashStringSync(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash).toString(16).padStart(8, '0');
+    }
+
+    function recomputeToken() {
+      const editor = document.getElementById("license-json-editor");
+      const badge = document.getElementById("tamper-badge");
+      const feedback = document.getElementById("tamper-feedback");
+      const fbTitle = document.getElementById("tamper-feedback-title");
+      const fbStatus = document.getElementById("tamper-feedback-status");
+      const fbDesc = document.getElementById("tamper-feedback-desc");
+      const sigDisplay = document.getElementById("sig-display");
+      const tokenDisplay = document.getElementById("token-display");
+
+      let currentParsed;
+      try {
+        currentParsed = JSON.parse(editor.value);
+      } catch (e) {
+        badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/40";
+        badge.textContent = "Malformed JSON";
+        feedback.className = "p-3 rounded-xl bg-rose-950/40 border border-rose-800/80 text-xs space-y-1";
+        fbTitle.innerHTML = `<span>⚠️</span> JSON Syntax Error`;
+        fbStatus.textContent = "Parse Error";
+        fbDesc.textContent = "Payload must be valid formatted JSON.";
+        return;
+      }
+
+      const canonicalCurrent = JSON.stringify(currentParsed, Object.keys(currentParsed).sort());
+      const canonicalValid = JSON.stringify(lastValidPayload, Object.keys(lastValidPayload).sort());
+
+      const isMatching = (canonicalCurrent === canonicalValid);
+
+      if (isMatching) {
+        badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+        badge.textContent = "Signature Valid";
+        feedback.className = "p-3 rounded-xl bg-emerald-950/40 border border-emerald-800/80 text-xs space-y-1";
+        fbTitle.innerHTML = `<span>✅</span> Ed25519 Signature Verified`;
+        fbStatus.textContent = "HTTP 200";
+        fbDesc.textContent = `Canonical sorted JSON data matches signature computed with vendor private key. Tier: ${(currentParsed.tier || 'starter').toUpperCase()}`;
+
+        const mockSig = "MEUCIQ" + hashStringSync(canonicalCurrent) + "v9KjD8e4Q2yZ0...L8x2pEd25519_VALID_SIG";
+        sigDisplay.textContent = mockSig;
+
+        const envelope = { data: currentParsed, sig: mockSig };
+        const b64 = btoa(JSON.stringify(envelope));
+        tokenDisplay.textContent = b64;
+
+        if (currentParsed.tier) {
+          setTierOverride(currentParsed.tier.toLowerCase());
+        }
+      } else {
+        badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/40 animate-shake";
+        badge.textContent = "Signature Mismatch (Tampered)";
+        feedback.className = "p-3 rounded-xl bg-rose-950/40 border border-rose-800/80 text-xs space-y-1 animate-shake";
+        fbTitle.innerHTML = `<span>🚫</span> 403 Forbidden — Signature Tampered`;
+        fbStatus.textContent = "REJECTED";
+        fbDesc.textContent = "Data was edited without re-signing via .secrets/private.pem. The compiled engine rejects this immediately.";
+
+        const invalidSig = "MEUCIQ" + hashStringSync(canonicalValid) + "_OLD_INVALID_SIGNATURE";
+        sigDisplay.textContent = invalidSig;
+
+        const envelope = { data: currentParsed, sig: invalidSig };
+        const b64 = btoa(JSON.stringify(envelope));
+        tokenDisplay.textContent = b64;
+      }
+    }
+
+    function reSignLicense() {
+      const editor = document.getElementById("license-json-editor");
+      try {
+        const parsed = JSON.parse(editor.value);
+        lastValidPayload = parsed;
+        recomputeToken();
+      } catch (e) {
+        alert("Please fix JSON syntax errors before signing.");
+      }
+    }
+
+    function simulatePastExpiry() {
+      const editor = document.getElementById("license-json-editor");
+      try {
+        const parsed = JSON.parse(editor.value);
+        parsed.expires_at = Math.floor(Date.now() / 1000) - 86400; // yesterday
+        editor.value = JSON.stringify(parsed, null, 2);
+        recomputeToken();
+      } catch (e) {}
+    }
+
+    function resetLicensePayload() {
+      lastValidPayload = {
+        "client_name": "Acme Global Enterprise Inc.",
+        "tier": "enterprise",
+        "issued_at": Math.floor(Date.now() / 1000) - 86400,
+        "expires_at": Math.floor(Date.now() / 1000) + (30 * 86400),
+        "host": "monowars-MacBook-Air.local"
+      };
+      document.getElementById("license-json-editor").value = JSON.stringify(lastValidPayload, null, 2);
+      recomputeToken();
+    }
+
+    // --- Section 3: Interactive Pricing & Guardrail Simulator ---
+    function setRegion(reg) {
+      currentRegion = reg;
+      ['BD', 'US', 'EU', 'OTHER'].forEach(r => {
+        const btn = document.getElementById(`btn-reg-${r}`);
+        if (r === reg) {
+          btn.className = "p-2 rounded-lg bg-indigo-950/80 border border-indigo-700 text-xs font-mono text-indigo-300 font-bold transition";
+        } else {
+          btn.className = "p-2 rounded-lg bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 hover:border-slate-700 transition";
+        }
+      });
+      updatePricingSimulation();
+    }
+
+    function setTierOverride(tier) {
+      currentTier = tier;
+      const btnStarter = document.getElementById("btn-tier-starter");
+      const btnEnt = document.getElementById("btn-tier-enterprise");
+      const simTierBadge = document.getElementById("sim-tier-badge");
+
+      if (tier === "starter") {
+        btnStarter.className = "p-2 rounded-lg bg-indigo-950/80 border border-indigo-700 text-xs font-bold text-indigo-300 transition";
+        btnEnt.className = "p-2 rounded-lg bg-slate-950 border border-slate-800 text-xs font-medium text-slate-400 hover:text-white transition";
+        simTierBadge.className = "px-2.5 py-1 rounded-md text-xs font-mono font-bold uppercase bg-slate-800 text-slate-300 border border-slate-700";
+        simTierBadge.textContent = "Starter (12% Cap)";
+      } else {
+        btnEnt.className = "p-2 rounded-lg bg-purple-950/80 border border-purple-700 text-xs font-bold text-purple-300 transition";
+        btnStarter.className = "p-2 rounded-lg bg-slate-950 border border-slate-800 text-xs font-medium text-slate-400 hover:text-white transition";
+        simTierBadge.className = "px-2.5 py-1 rounded-md text-xs font-mono font-bold uppercase bg-purple-900/60 text-purple-300 border border-purple-700";
+        simTierBadge.textContent = "Enterprise (20% Max)";
+      }
+      updatePricingSimulation();
+    }
+
+    function loadSamplePreset(preset) {
+      if (preset === 'bulk') {
+        document.getElementById("input-qty").value = 250;
+        document.getElementById("input-price").value = 310;
+        document.getElementById("input-cost").value = 186;
+        setRegion('US');
+        setTierOverride('enterprise');
+      }
+    }
+
+    function setTightMarginCost() {
+      const price = parseFloat(document.getElementById("input-price").value);
+      // set cost to 80% of price to induce guardrail
+      document.getElementById("input-cost").value = Math.round(price * 0.80);
+      updatePricingSimulation();
+    }
+
+    async function computeSha256(text) {
+      const msgBuffer = new TextEncoder().encode(text);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function updatePricingSimulation() {
+      const qty = parseInt(document.getElementById("input-qty").value);
+      const unitPrice = parseFloat(document.getElementById("input-price").value);
+      const unitCost = parseFloat(document.getElementById("input-cost").value);
+
+      document.getElementById("val-qty").textContent = `${qty} units`;
+      document.getElementById("val-price").textContent = `$${unitPrice.toFixed(2)}`;
+      document.getElementById("val-cost").textContent = `$${unitCost.toFixed(2)}`;
+
+      const gross = qty * unitPrice;
+      const totalCost = qty * unitCost;
+
+      // Base volume discount schedule
+      let rawDiscountPct = 0.0;
+      if (qty >= 200) rawDiscountPct = 20.0;
+      else if (qty >= 50) rawDiscountPct = 12.0;
+      else if (qty >= 10) rawDiscountPct = 5.0;
+
+      // Tier capping
+      let maxDiscountCap = (currentTier === "starter") ? 12.0 : 20.0;
+      let appliedDiscountPct = Math.min(rawDiscountPct, maxDiscountCap);
+
+      let discountAmount = gross * (appliedDiscountPct / 100.0);
+      let netRevenue = gross - discountAmount;
+
+      // Tiered sales commission
+      let commissionRate = 0.04;
+      if (netRevenue >= 20000) commissionRate = 0.08;
+      else if (netRevenue >= 5000) commissionRate = 0.06;
+
+      let commission = netRevenue * commissionRate;
+      let netProfit = netRevenue - totalCost - commission;
+      let netMarginPct = netRevenue > 0 ? (netProfit / netRevenue) * 100.0 : 0.0;
+
+      // 18.0% Net Profit Margin Guardrail Floor
+      let guardrailTriggered = false;
+      let guardrailStatusText = "";
+
+      if (netRevenue > 0 && netMarginPct < 18.0) {
+        guardrailTriggered = true;
+        const denom = 1.0 - commissionRate - 0.18;
+        let minRequiredNetRev = denom > 0 ? (totalCost / denom) : gross;
+
+        if (minRequiredNetRev >= gross) {
+          // 0% discount still breaches
+          appliedDiscountPct = 0.0;
+          discountAmount = 0.0;
+          netRevenue = gross;
+          commission = netRevenue * commissionRate;
+          netProfit = netRevenue - totalCost - commission;
+          netMarginPct = (netProfit / netRevenue) * 100.0;
+          guardrailStatusText = `🚨 Critical COGS Breach: Unit cost ($${unitCost.toFixed(2)}) is too high. Volume discount revoked completely (0.0%). Net Margin: ${netMarginPct.toFixed(1)}%.`;
+        } else {
+          // Adjust discount downward
+          let maxAllowedDiscount = Math.max(0.0, gross - minRequiredNetRev);
+          let adjustedDiscountPct = (maxAllowedDiscount / gross) * 100.0;
+
+          guardrailStatusText = `⚠️ 18.0% Margin Floor Enforced: Raw eligible discount curtailed from ${rawDiscountPct.toFixed(1)}% to ${adjustedDiscountPct.toFixed(1)}% to safeguard profitability.`;
+          appliedDiscountPct = adjustedDiscountPct;
+          discountAmount = maxAllowedDiscount;
+          netRevenue = gross - discountAmount;
+          commission = netRevenue * commissionRate;
+          netProfit = netRevenue - totalCost - commission;
+          netMarginPct = (netProfit / netRevenue) * 100.0;
+        }
+      }
+
+      // Regional Tax
+      const taxRate = TAX_SLABS[currentRegion] || 0.10;
+      const taxAmount = netRevenue * taxRate;
+      const finalOrderTotal = netRevenue + taxAmount;
+
+      // Update UI
+      document.getElementById("sim-gross").textContent = `$${gross.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+      document.getElementById("sim-discount").textContent = `-$${discountAmount.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+      document.getElementById("sim-discount-pct").textContent = `${appliedDiscountPct.toFixed(1)}% applied ${rawDiscountPct > appliedDiscountPct && !guardrailTriggered ? '(Tier Capped)' : ''}`;
+
+      document.getElementById("sim-profit").textContent = `$${netProfit.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+      document.getElementById("sim-margin-pct").textContent = `${netMarginPct.toFixed(1)}% net margin`;
+
+      document.getElementById("sim-final").textContent = `$${finalOrderTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+
+      // Table rows
+      document.getElementById("row-gross").textContent = `$${gross.toFixed(2)}`;
+      document.getElementById("row-discount").textContent = `-$${discountAmount.toFixed(2)}`;
+      document.getElementById("row-discount-label").textContent = `Applied Discount (${appliedDiscountPct.toFixed(1)}%)`;
+      document.getElementById("row-net-rev").textContent = `$${netRevenue.toFixed(2)}`;
+      document.getElementById("row-cost").textContent = `-$${totalCost.toFixed(2)}`;
+      document.getElementById("row-comm").textContent = `-$${commission.toFixed(2)}`;
+      document.getElementById("row-comm-label").textContent = `Sales Rep Commission (${(commissionRate * 100).toFixed(0)}%)`;
+      document.getElementById("row-tax").textContent = `+$${taxAmount.toFixed(2)}`;
+      document.getElementById("row-tax-label").textContent = `Regional Tax (${currentRegion} ${(taxRate * 100).toFixed(0)}%)`;
+      document.getElementById("row-final").textContent = `$${finalOrderTotal.toFixed(2)}`;
+
+      // Guardrail alert box
+      const alertBox = document.getElementById("guardrail-alert");
+      const alertIcon = document.getElementById("guardrail-icon");
+      const alertTitle = document.getElementById("guardrail-title");
+      const alertDesc = document.getElementById("guardrail-desc");
+
+      if (guardrailTriggered) {
+        alertBox.className = "p-4 rounded-xl border bg-amber-950/40 border-amber-800 text-xs transition-all shadow-md animate-pulse-slow";
+        alertIcon.textContent = "🛡️";
+        alertTitle.textContent = "18.0% Net Profit Margin Guardrail Enforced";
+        alertTitle.className = "font-bold uppercase tracking-wider text-amber-300";
+        alertDesc.textContent = guardrailStatusText;
+      } else {
+        alertBox.className = "p-4 rounded-xl border bg-emerald-950/30 border-emerald-800/80 text-xs transition-all shadow-md";
+        alertIcon.textContent = "✅";
+        alertTitle.textContent = "Margin Guardrail Satisfied";
+        alertTitle.className = "font-bold uppercase tracking-wider text-emerald-300";
+        alertDesc.textContent = `Net profit margin (${netMarginPct.toFixed(1)}%) safely exceeds the 18.0% minimum guardrail floor.`;
+      }
+
+      // SHA-256 Digest
+      const digestPayload = `${gross}:${discountAmount}:${netRevenue}:${taxAmount}:${finalOrderTotal}:${currentTier}`;
+      const sha = await computeSha256(digestPayload);
+      document.getElementById("sim-digest").textContent = sha;
+    }
+
+    function copyCmd(text) {
+      navigator.clipboard.writeText(text);
+      alert(`Copied: ${text}`);
+    }
+
+    // Init
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("license-json-editor").addEventListener("input", recomputeToken);
+      resetLicensePayload();
+      updatePricingSimulation();
+    });
+  </script>
+</body>
+</html>
